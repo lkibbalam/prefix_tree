@@ -1,6 +1,5 @@
 # create a tree structure
 class Tree
-  attr_reader :first_node
   def initialize
     @first_node = Node.new('*')
   end
