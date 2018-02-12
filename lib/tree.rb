@@ -5,8 +5,7 @@ class Tree
   end
 
   def add(word, current = @root_node)
-    chars = word.split('')
-    chars.each { |char| current = find_or_add_node(char, current.children) }
+    word.chars.each { |char| current = find_or_add_node(char, current.children) }
     current.end_of_word = true
   end
 
