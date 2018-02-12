@@ -20,7 +20,7 @@ RSpec.describe Tree do
 
   describe '#include?' do
     let!(:add_to_tree) { tree.add(temp_string) }
-    
+
     it { expect(tree.include?('abc')).to eq(true) }
     it { expect(tree.include?('acb')).to eq(false) }
     it { expect(tree.include?('abcd')).to eq(false) }

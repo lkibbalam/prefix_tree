@@ -15,4 +15,3 @@ p tree.include?('word')
 p tree.include?('ababagalamaga')
 
 p tree.list
-
