@@ -19,6 +19,13 @@ class Tree
     words
   end
 
+  def read_from_txt(current = @root_node)
+    words = File.readlines('data/words.txt').map(&:chomp)
+    words.each { |word| add(word, current) }
+  end
+
+  
+
   private
 
   def find_or_add_node(letter, tree)
