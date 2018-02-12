@@ -24,7 +24,12 @@ class Tree
     words.each { |word| add(word, current) }
   end
 
-  
+  def write_to_txt(current = @root_node, words = [])
+    list(current, words)
+    f = File.new('data/words.txt', 'a')
+    words.each { |word| f.puts word unless word.nil? }
+    f.close
+  end
 
   private
 

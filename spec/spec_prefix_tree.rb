@@ -1,5 +1,4 @@
 require 'rspec'
-require_relative '../prefix_tree'
 
 RSpec.describe Tree do
   let(:temp_string) { 'abc' }

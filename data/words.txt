@@ -1,7 +1,7 @@
-machine
-sun
-sunset
-sunrise
-lemon
-banana
-pineapple
+words
+worddd
+word
+sword
+soap
+dog
+iguana
