@@ -1,5 +1,4 @@
 require 'rspec'
-require 'pry'
 require_relative '../prefix_tree'
 
 RSpec.describe Tree do
