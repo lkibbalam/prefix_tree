@@ -2,7 +2,6 @@
 class Tree
   def initialize
     @root_node = Node.new('')
-    @words = []
   end
 
   def add(word, current = @root_node)
@@ -14,10 +13,10 @@ class Tree
     word.chars.all? { |char| current = find_node(char, current) } && current.end_of_word
   end
 
-  def list(current = @root_node)
-    current.children.each { |node| list(node) }
-    @words << current.to_s if current.end_of_word
-    @words
+  def list(current = @root_node, words = [])
+    current.children.each { |node| list(node, words) }
+    words << current.to_s if current.end_of_word
+    words
   end
 
   private
