@@ -17,6 +17,6 @@ class Tree
   end
 
   def find_node(letter, tree)
-    tree.find { |node| node.key == letter }
+    tree.find { |node| node.key.eql? letter }
   end
 end
