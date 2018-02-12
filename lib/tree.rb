@@ -9,6 +9,10 @@ class Tree
     current.end_of_word = true
   end
 
+  def include?(word, current = @root_node)
+    word.chars.all? { |char| current = find_node(char, current.children) } && current.end_of_word
+  end
+
   private
 
   def find_or_add_node(letter, tree)
