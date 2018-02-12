@@ -9,7 +9,7 @@ RSpec.describe Tree do
     it 'it return keys of child arrays' do
       tree.add(temp_string)
       current_node = tree.instance_variable_get(:@root_node)
-      result_string = temp_string.split('').map do |_node|
+      result_string = temp_string.chars.map do |_node|
         current_node = current_node.children[0]
         current_node.key
       end.join
