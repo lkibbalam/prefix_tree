@@ -1,13 +1,12 @@
 # create a tree structure
 class Tree
   def initialize
-    @first_node = Node.new('*')
+    @root_node = Node.new('')
   end
 
-  def add(word)
+  def add(word, current = @root_node)
     chars = word.split('')
-    current = @first_node
-    chars.each { |char| current = add_char(char, current.array) }
+    chars.each { |char| current = add_char(char, current.children) }
     current.mark = true
   end
 
