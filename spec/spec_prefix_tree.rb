@@ -17,4 +17,12 @@ RSpec.describe Tree do
       expect(result_string).to eq(temp_string)
     end
   end
+  describe '#include?' do
+    it 'true if prefix tree include word and false if there is no word' do
+      tree.add(temp_string)
+      expect(tree.include?('abc')).to be_truthy
+      expect(tree.include?('acb')).to be_falsey
+      expect(tree.include?('abcd')).to be_falsey
+    end
+  end
 end
