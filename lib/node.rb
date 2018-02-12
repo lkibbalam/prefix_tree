@@ -1,6 +1,6 @@
 # Node of the tree, have key-char, mark-end of the ford of and child-array
 class Node
-  attr_accessor :mark, :key, :children
+  attr_accessor :end_of_word, :key, :children
 
   def initialize(key)
     @key = key

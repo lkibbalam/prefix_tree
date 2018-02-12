@@ -6,17 +6,17 @@ class Tree
 
   def add(word, current = @root_node)
     chars = word.split('')
-    chars.each { |char| current = add_char(char, current.children) }
-    current.mark = true
+    chars.each { |char| current = find_or_add_node(char, current.children) }
+    current.end_of_word = true
   end
 
   private
 
-  def add_char(letter, tree)
-    find_char(letter, tree) || Node.new(letter).tap { |node| tree << node }
+  def find_or_add_node(letter, tree)
+    find_node(letter, tree) || Node.new(letter).tap { |node| tree << node }
   end
 
-  def find_char(letter, tree)
+  def find_node(letter, tree)
     tree.find { |node| node.key == letter }
   end
 end

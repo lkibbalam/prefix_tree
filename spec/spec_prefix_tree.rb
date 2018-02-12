@@ -1,13 +1,21 @@
 require 'rspec'
+require 'pry'
 require_relative '../prefix_tree'
 
 RSpec.describe Tree do
-  it 'it return keys of child arrays' do
-    tree = Tree.new
-    tree.add('abc')
-    expect(tree.instance_variable_get(:@first_node).key).to eq('*')
-    expect(tree.instance_variable_get(:@first_node).array[0].key).to eq('a')
-    expect(tree.instance_variable_get(:@first_node).array[0].array[0].key).to eq('b')
-    expect(tree.instance_variable_get(:@first_node).array[0].array[0].array[0].key).to eq('c')
+  let(:temp_string) { 'abc' }
+  let(:tree) { described_class.new }
+
+  describe '#add' do
+    it 'it return keys of child arrays' do
+      tree.add(temp_string)
+      current_node = tree.instance_variable_get(:@root_node)
+      result_string = temp_string.split('').map do |_node|
+        current_node = current_node.children[0]
+        current_node.key
+      end.join
+
+      expect(result_string).to eq(temp_string)
+    end
   end
 end
