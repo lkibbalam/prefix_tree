@@ -10,8 +10,7 @@ class Tree
   end
 
   def include?(word, current = @root_node)
-    found_word = word.chars.all? { |char| current = find_node(char, current.children) }
-    found_word && current.end_of_word ? true : false
+    word.chars.all? { |char| current = find_node(char, current.children) } && current.end_of_word
   end
 
   private
