@@ -25,4 +25,10 @@ RSpec.describe Tree do
     it { expect(tree.include?('acb')).to eq(false) }
     it { expect(tree.include?('abcd')).to eq(false) }
   end
+
+  describe '#list' do
+    let!(:add_to_tree) { tree.add(temp_string) }
+
+    it { expect(tree.list).to include('abc') }
+  end
 end
