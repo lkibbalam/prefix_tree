@@ -4,10 +4,10 @@ require_relative '../prefix_tree'
 RSpec.describe Tree do
   let(:temp_string) { 'abc' }
   let(:tree) { described_class.new }
+  let!(:add_to_tree) { tree.add(temp_string) }
 
   describe '#add' do
     it 'it return keys of child arrays' do
-      tree.add(temp_string)
       current_node = tree.instance_variable_get(:@root_node)
       result_string = temp_string.chars.map do |_node|
         current_node = current_node.children[0]
@@ -19,16 +19,17 @@ RSpec.describe Tree do
   end
 
   describe '#include?' do
-    let!(:add_to_tree) { tree.add(temp_string) }
-
     it { expect(tree.include?('abc')).to eq(true) }
     it { expect(tree.include?('acb')).to eq(false) }
     it { expect(tree.include?('abcd')).to eq(false) }
   end
 
   describe '#list' do
-    let!(:add_to_tree) { tree.add(temp_string) }
+    let(:array_of_words) { %w[kefir moloko] }
+    let!(:push_to_tree) { array_of_words.each { |word| tree.add(word) } }
 
-    it { expect(tree.list).to include('abc') }
+    it do
+      expect(tree.list).to match_array([temp_string, array_of_words].flatten)
+    end
   end
 end
