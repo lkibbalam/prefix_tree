@@ -27,19 +27,17 @@ RSpec.describe Tree do
     let(:array_of_words) { %w[kefir moloko] }
     let!(:push_to_tree) { array_of_words.each { |word| tree.add(word) } }
 
-    it do
-      expect(tree.list).to match_array([temp_string, array_of_words].flatten)
-    end
+    it { expect(tree.list).to match_array([temp_string, array_of_words].flatten) }
   end
 
   describe '#save_to_file' do
     let!(:file_path) { stub_const('Tree::FILE_PATH', 'spec/support/support_save.txt') }
+    after(:each) { File.delete(file_path) }
 
     it 'it have to save words to file' do
       %w[abc kefir moloko].each { |word| tree.add(word) }
       tree.save_to_file
       expect(tree.list).to match_array(File.readlines(file_path).map(&:chomp))
-      File.delete(file_path)
     end
   end
 
