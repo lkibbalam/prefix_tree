@@ -1,6 +1,7 @@
 # create a tree structure
 class Tree
   FILE_PATH = 'data/words.txt'.freeze
+
   def initialize
     @root_node = Node.new('')
   end
@@ -17,7 +18,7 @@ class Tree
   end
 
   def list
-    list_words
+    perform_list
   end
 
   def load_from_file
@@ -25,13 +26,13 @@ class Tree
   end
 
   def save_to_file
-    File.open(FILE_PATH, 'a') { |file| list_words.each { |word| file.puts word } }
+    File.open(FILE_PATH, 'a') { |file| perform_list.each { |word| file.puts word } }
   end
 
   private
 
-  def list_words(words = [], current = @root_node)
-    current.children.each { |node| list_words(words, node) }
+  def perform_list(words = [], current = @root_node)
+    current.children.each { |node| perform_list(words, node) }
     words << current.to_s if current.end_of_word
     words
   end
