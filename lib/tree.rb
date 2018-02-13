@@ -17,7 +17,7 @@ class Tree
   end
 
   def list
-    list_node
+    list_words
   end
 
   def load_from_file
