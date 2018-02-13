@@ -21,15 +21,11 @@ class Tree
   end
 
   def load_from_file
-    File.readlines(FILE_PATH).map(&:chomp).each { |word| add(word) }
+    File.readlines(FILE_PATH).each { |word| add(word.chomp) }
   end
 
   def save_to_file
-    words = []
-    list_words(words)
-    f = File.new(FILE_PATH, 'a')
-    words.each { |word| f.puts word unless word.nil? }
-    f.close
+    File.open(FILE_PATH, 'a') { |file| list_words.each { |word| file.puts word } }
   end
 
   private
