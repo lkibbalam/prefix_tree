@@ -28,7 +28,7 @@ class Tree
   def save_to_file
     current = @root_node
     words = []
-    list_node(current, words)
+    list_words(current, words)
     f = File.new(FILE_PATH, 'a')
     words.each { |word| f.puts word unless word.nil? }
     f.close
