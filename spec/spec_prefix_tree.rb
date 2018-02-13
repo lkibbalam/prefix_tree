@@ -49,5 +49,4 @@ RSpec.describe Tree do
       expect(tree.list).to match_array(File.readlines(file_path).map(&:chomp))
     end
   end
-
 end
