@@ -21,14 +21,12 @@ class Tree
   end
 
   def load_from_file
-    words = File.readlines(FILE_PATH).map(&:chomp)
-    words.each { |word| add(word) }
+    File.readlines(FILE_PATH).map(&:chomp).each { |word| add(word) }
   end
 
   def save_to_file
-    current = @root_node
     words = []
-    list_words(current, words)
+    list_words(words)
     f = File.new(FILE_PATH, 'a')
     words.each { |word| f.puts word unless word.nil? }
     f.close
@@ -36,8 +34,8 @@ class Tree
 
   private
 
-  def list_words(current = @root_node, words = [])
-    current.children.each { |node| list_words(node, words) }
+  def list_words(words = [], current = @root_node)
+    current.children.each { |node| list_words(words, node) }
     words << current.to_s if current.end_of_word
     words
   end
