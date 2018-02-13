@@ -5,27 +5,29 @@ class Tree
     @root_node = Node.new('')
   end
 
-  def add(word, current = @root_node)
+  def add(word)
+    current = @root_node
     word.chars.each { |char| current = find_or_add_node(char, current) }
     current.end_of_word = true
   end
 
-  def include?(word, current = @root_node)
+  def include?(word)
+    current = @root_node
     word.chars.all? { |char| current = find_node(char, current) } && current.end_of_word
   end
 
   def list
+    list_node
+  end
+
+  def load_from_file
+    words = File.readlines(FILE_PATH).map(&:chomp)
+    words.each { |word| add(word) }
+  end
+
+  def save_to_file
     current = @root_node
     words = []
-    list_node(current, words)
-  end
-
-  def load_from_file(current = @root_node)
-    words = File.readlines(FILE_PATH).map(&:chomp)
-    words.each { |word| add(word, current) }
-  end
-
-  def save_to_file(current = @root_node, words = [])
     list_node(current, words)
     f = File.new(FILE_PATH, 'a')
     words.each { |word| f.puts word unless word.nil? }
@@ -34,8 +36,8 @@ class Tree
 
   private
 
-  def list_node(current = @root_node, words = [])
-    current.children.each { |node| list_node(node, words) }
+  def list_words(current = @root_node, words = [])
+    current.children.each { |node| list_words(node, words) }
     words << current.to_s if current.end_of_word
     words
   end

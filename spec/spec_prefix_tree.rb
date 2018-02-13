@@ -32,34 +32,28 @@ RSpec.describe Tree do
     end
   end
 
-  describe '#save_to_file' do
+  context 'load/save to file' do
     let!(:file_path) { stub_const('Tree::FILE_PATH', 'spec/support/support.txt') }
-    let(:array_of_words) { %w[kefir moloko] }
-    let!(:push_to_tree) { array_of_words.each { |word| tree.add(word) } }
-    let!(:save) { tree.save_to_file }
     let!(:array) { [] }
-    let!(:file_words_to_array) do
-      words = File.readlines(file_path).map(&:chomp)
-      words.each { |word| array << word }
+
+    describe '#save_to_file' do
+      it 'it have to save words to file' do
+        %w[abc kefir moloko].each { |word| tree.add(word) }
+        tree.save_to_file
+        words = File.readlines(file_path).map(&:chomp)
+        words.each { |word| array << word }
+        expect(tree.list).to match_array(array)
+      end
     end
 
-    it 'it have to save words to file' do
-      expect(tree.list).to match_array(array)
-    end
-  end
-
-  describe '#load_from_file' do
-    let!(:file_path) { stub_const('Tree::FILE_PATH', 'spec/support/support.txt') }
-    let!(:load_words) { tree.load_from_file }
-    let!(:array) { [] }
-    let!(:file_words_to_array) do
-      words = File.readlines(file_path).map(&:chomp)
-      words.each { |word| array << word }
-      File.delete(file_path)
-    end
-
-    it 'it have to load words from file' do
-      expect(tree.list).to match_array(array)
+    describe '#load_from_file' do
+      it 'it have to load words from file' do
+        tree.load_from_file
+        words = File.readlines(file_path).map(&:chomp)
+        words.each { |word| array << word }
+        File.delete(file_path)
+        expect(tree.list).to match_array(array)
+      end
     end
   end
 end

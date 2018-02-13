@@ -16,3 +16,5 @@ p tree.include?('ababagalamaga')
 
 p tree.list
 tree.save_to_file
+tree.load_from_file
+
