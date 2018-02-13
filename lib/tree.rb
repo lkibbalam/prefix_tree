@@ -1,5 +1,6 @@
 # create a tree structure
 class Tree
+  FILE_PATH = 'data/words.txt'.freeze
   def initialize
     @root_node = Node.new('')
   end
@@ -13,25 +14,31 @@ class Tree
     word.chars.all? { |char| current = find_node(char, current) } && current.end_of_word
   end
 
-  def list(current = @root_node, words = [])
-    current.children.each { |node| list(node, words) }
-    words << current.to_s if current.end_of_word
-    words
+  def list
+    current = @root_node
+    words = []
+    list_node(current, words)
   end
 
-  def read_from_txt(current = @root_node)
-    words = File.readlines('data/words.txt').map(&:chomp)
+  def load_from_file(current = @root_node)
+    words = File.readlines(FILE_PATH).map(&:chomp)
     words.each { |word| add(word, current) }
   end
 
-  def write_to_txt(current = @root_node, words = [])
-    list(current, words)
-    f = File.new('data/words.txt', 'a')
+  def save_to_file(current = @root_node, words = [])
+    list_node(current, words)
+    f = File.new(FILE_PATH, 'a')
     words.each { |word| f.puts word unless word.nil? }
     f.close
   end
 
   private
+
+  def list_node(current = @root_node, words = [])
+    current.children.each { |node| list_node(node, words) }
+    words << current.to_s if current.end_of_word
+    words
+  end
 
   def find_or_add_node(letter, tree)
     find_node(letter, tree) || add_node(letter, tree)

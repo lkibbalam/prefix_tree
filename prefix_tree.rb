@@ -14,6 +14,5 @@ tree.add('iguana')
 p tree.include?('word')
 p tree.include?('ababagalamaga')
 
-tree.read_from_txt
-
-tree.list
+p tree.list
+tree.save_to_file
