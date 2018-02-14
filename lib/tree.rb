@@ -1,7 +1,8 @@
 # create a tree structure
 class Tree
   FILE_PATH = 'data/words.txt'.freeze
-  
+  ZIP_FILE_PATH = 'data/words.zip'.freeze
+
   def initialize
     @root_node = Node.new('')
   end
@@ -30,15 +31,15 @@ class Tree
   end
 
   def save_to_zip_file
-    File.delete('data/words.zip') if File.exist?('data/words.zip')
+    File.delete(ZIP_FILE_PATH) if File.exist?(ZIP_FILE_PATH)
     File.open('data/temp_words.txt', 'a') { |file| perform_list.each { |word| file.puts word } }
-    Zip::File.open('data/words.zip', Zip::File::CREATE) { |z| z.add('words.txt', File.join('data', 'temp_words.txt')) }
+    Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |z| z.add('words.txt', File.join('data', 'temp_words.txt')) }
     File.delete('data/temp_words.txt')
   end
 
   def load_from_zip_file
     File.delete('data/words.txt') if File.exist?('data/words.txt')
-    Zip::File.open('data/words.zip') { |zip_file| zip_file.each { |entry| entry.extract('data/words.txt') } }
+    Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.each { |entry| entry.extract('data/words.txt') } }
     File.readlines(FILE_PATH).each { |word| add(word.chomp) }
   end
 
