@@ -32,15 +32,15 @@ class Tree
 
   def save_to_zip_file
     File.delete(ZIP_FILE_PATH) if File.exist?(ZIP_FILE_PATH)
-    File.open('data/temp_words.txt', 'a') { |file| perform_list.each { |word| file.puts word } }
-    Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |z| z.add('words.txt', File.join('data', 'temp_words.txt')) }
-    File.delete('data/temp_words.txt')
+    save_to_file
+    Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |z| z.add('words.txt', File.join('data', 'words.txt')) }
+    File.delete('data/words.txt')
   end
 
   def load_from_zip_file
     File.delete('data/words.txt') if File.exist?('data/words.txt')
     Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.each { |entry| entry.extract('data/words.txt') } }
-    File.readlines(FILE_PATH).each { |word| add(word.chomp) }
+    load_from_file
   end
 
   private
