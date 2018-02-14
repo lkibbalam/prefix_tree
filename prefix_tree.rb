@@ -15,9 +15,7 @@ tree.add('iguana')
 
 p tree.include?('word')
 p tree.include?('ababagalamaga')
-tree.save_to_zip_file
 
-p tree.save_to_file
-p tree.load_from_file
+tree.save_to_zip_file
 
 p tree.list

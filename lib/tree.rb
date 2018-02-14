@@ -1,7 +1,7 @@
 # create a tree structure
 class Tree
   FILE_PATH = 'data/words.txt'.freeze
-
+  
   def initialize
     @root_node = Node.new('')
   end

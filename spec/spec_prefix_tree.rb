@@ -49,4 +49,19 @@ RSpec.describe Tree do
       expect(tree.list).to match_array(File.readlines(file_path).map(&:chomp))
     end
   end
+
+  describe '#save_to_zip_file' do
+    it 'file have to exist' do
+      %w[abc kefir moloko].each { |word| tree.add(word) }
+      tree.save_to_zip_file
+      expect(File.exist?('data/words.zip')).to be true
+    end
+  end
+
+  describe '#load_from_zip_file' do
+    it 'it should add words to tree from zip file' do
+      tree.load_from_zip_file
+      expect(tree.list).to match_array(%w[abc kefir moloko])
+    end
+  end
 end
