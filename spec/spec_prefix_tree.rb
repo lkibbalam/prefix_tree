@@ -54,20 +54,18 @@ RSpec.describe Tree do
     let(:file_path) { stub_const('Tree::FILE_PATH', 'spec/support/support.txt') }
     let(:zip_file_path) { stub_const('Tree::ZIP_FILE_PATH', 'spec/support/support.zip') }
     let(:zip_temp_path) { stub_const('Tree::ZIP_TEMP_PATH', 'spec/support/support_zip.txt') }
-    let(:join_file_path) { stub_const('Tree::JOIN_FILE_PATH', File.join('spec/support', 'support_zip.txt')) }
-    let(:param) { stub_const('Tree::PARAM', 'support.txt') }
 
     describe '#save_to_zip_file' do
       it 'file have to exist' do
         %w[abc kefir moloko].each { |word| tree.add(word) }
-        tree.save_to_zip_file(zip_file_path, zip_temp_path, param, join_file_path)
+        tree.save_to_zip_file(zip_file_path, zip_temp_path)
         expect(File.exist?('spec/support/support.zip')).to eq true
       end
     end
 
     describe '#load_from_zip_file' do
       it 'it should add words to tree from zip file' do
-        tree.load_from_zip_file(file_path, zip_file_path, zip_temp_path, param, join_file_path)
+        tree.load_from_zip_file(file_path, zip_file_path, zip_temp_path)
         expect(tree.list).to match_array(%w[abc kefir moloko])
       end
     end

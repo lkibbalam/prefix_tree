@@ -11,3 +11,6 @@ tree.add('cab')
 p tree.include?('word')
 p tree.include?('ababagalamaga')
 p tree.list
+tree.save_to_zip_file
+tree.load_from_zip_file
+p tree.list
