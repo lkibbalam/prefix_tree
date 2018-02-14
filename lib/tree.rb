@@ -2,6 +2,7 @@
 class Tree
   FILE_PATH = 'data/words.txt'.freeze
   ZIP_FILE_PATH = 'data/words.zip'.freeze
+  ZIP_TEMP_PATH = 'data/zip_words.txt'.freeze
 
   def initialize
     @root_node = Node.new('')
@@ -22,25 +23,26 @@ class Tree
     perform_list
   end
 
-  def load_from_file
-    File.readlines(FILE_PATH).each { |word| add(word.chomp) }
+  def load_from_file(path = FILE_PATH)
+    File.readlines(path).each { |word| add(word.chomp) }
   end
 
-  def save_to_file
-    File.open(FILE_PATH, 'a') { |file| perform_list.each { |word| file.puts word } }
+  def save_to_file(path = FILE_PATH)
+    File.open(path, 'a') { |file| perform_list.each { |word| file.puts word } }
   end
 
   def save_to_zip_file
     File.delete(ZIP_FILE_PATH) if File.exist?(ZIP_FILE_PATH)
-    save_to_file
-    Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |z| z.add('words.txt', File.join('data', 'words.txt')) }
-    File.delete(FILE_PATH)
+    save_to_file(ZIP_TEMP_PATH)
+    Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |zip| zip.add('words.txt', File.join('data', 'zip_words.txt')) }
+    File.delete(ZIP_TEMP_PATH)
   end
 
   def load_from_zip_file
     File.delete(FILE_PATH) if File.exist?(FILE_PATH)
-    Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.extract('words.txt', File.join('data', 'words.txt')) }
-    load_from_file
+    Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.extract('words.txt', File.join('data', 'zip_words.txt')) }
+    load_from_file(ZIP_TEMP_PATH)
+    File.delete(ZIP_TEMP_PATH)
   end
 
   private

@@ -17,5 +17,5 @@ p tree.include?('word')
 p tree.include?('ababagalamaga')
 
 tree.save_to_zip_file
-
+tree.load_from_zip_file
 p tree.list
