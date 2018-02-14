@@ -34,12 +34,12 @@ class Tree
     File.delete(ZIP_FILE_PATH) if File.exist?(ZIP_FILE_PATH)
     save_to_file
     Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |z| z.add('words.txt', File.join('data', 'words.txt')) }
-    File.delete('data/words.txt')
+    File.delete(FILE_PATH)
   end
 
   def load_from_zip_file
-    File.delete('data/words.txt') if File.exist?('data/words.txt')
-    Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.each { |entry| entry.extract('data/words.txt') } }
+    File.delete(FILE_PATH) if File.exist?(FILE_PATH)
+    Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.extract('words.txt', File.join('data', 'words.txt')) }
     load_from_file
   end
 
