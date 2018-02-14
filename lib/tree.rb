@@ -3,6 +3,8 @@ class Tree
   FILE_PATH = 'data/words.txt'.freeze
   ZIP_FILE_PATH = 'data/words.zip'.freeze
   ZIP_TEMP_PATH = 'data/zip_words.txt'.freeze
+  JOIN_FILE_PATH = File.join('data', 'zip_words.txt').freeze
+  PARAM = 'words.txt'.freeze
 
   def initialize
     @root_node = Node.new('')
@@ -31,18 +33,22 @@ class Tree
     File.open(path, 'a') { |file| perform_list.each { |word| file.puts word } }
   end
 
-  def save_to_zip_file
-    File.delete(ZIP_FILE_PATH) if File.exist?(ZIP_FILE_PATH)
-    save_to_file(ZIP_TEMP_PATH)
-    Zip::File.open(ZIP_FILE_PATH, Zip::File::CREATE) { |zip| zip.add('words.txt', File.join('data', 'zip_words.txt')) }
-    File.delete(ZIP_TEMP_PATH)
+  def save_to_zip_file(zip_file_path = ZIP_FILE_PATH, zip_temp_path = ZIP_TEMP_PATH, param = PARAM,
+                       join_file_path = JOIN_FILE_PATH)
+
+    File.delete(zip_file_path) if File.exist?(zip_file_path)
+    save_to_file(zip_temp_path)
+    Zip::File.open(zip_file_path, Zip::File::CREATE) { |zip| zip.add(param, join_file_path) }
+    File.delete(zip_temp_path)
   end
 
-  def load_from_zip_file
-    File.delete(FILE_PATH) if File.exist?(FILE_PATH)
-    Zip::File.open(ZIP_FILE_PATH) { |zip_file| zip_file.extract('words.txt', File.join('data', 'zip_words.txt')) }
-    load_from_file(ZIP_TEMP_PATH)
-    File.delete(ZIP_TEMP_PATH)
+  def load_from_zip_file(path = FILE_PATH, zip_file_path = ZIP_FILE_PATH, zip_temp_path = ZIP_TEMP_PATH, param = PARAM,
+                         join_file_path = JOIN_FILE_PATH)
+
+    File.delete(path) if File.exist?(path)
+    Zip::File.open(zip_file_path) { |zip_file| zip_file.extract(param, join_file_path) }
+    load_from_file(zip_temp_path)
+    File.delete(zip_temp_path)
   end
 
   private
