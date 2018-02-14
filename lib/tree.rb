@@ -1,3 +1,4 @@
+require 'zip'
 # create a tree structure
 class Tree
   FILE_PATH = 'data/words.txt'.freeze
@@ -28,6 +29,22 @@ class Tree
   def save_to_file
     File.open(FILE_PATH, 'a') { |file| perform_list.each { |word| file.puts word } }
   end
+
+  def save_to_zip_file
+    File.delete('data/words.zip') if File.exist?('data/words.zip')
+    File.open('data/temp_words.txt', 'a') { |file| perform_list.each { |word| file.puts word } }
+    Zip::File.open('data/words.zip', Zip::File::CREATE) { |zipfile| zipfile.add('words.txt', File.join('data', 'temp_words.txt')) }
+    File.delete('data/temp_words.txt')
+  end
+
+  #def load_from_zip_file
+   #"#{ Zip::File.open('data/words.zip') do |zip_file|
+    #  zip_file.each do |entry|
+     #   puts "Extracting #{entry.name}"
+      #  entry.extract(dest_file)
+      #end
+    #end
+ # end
 
   private
 
