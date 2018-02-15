@@ -10,13 +10,13 @@ class Tree
 
   def add(word)
     current = @root_node
-    word.chars.each { |char| current = find_or_add_node(char, current.children) }
+    word.chars.each { |char| current = find_or_add_node(char, current) }
     current.end_of_word = true
   end
 
   def include?(word)
     current = @root_node
-    word.chars.all? { |char| current = find_node(char, current.children) } && current.end_of_word
+    word.chars.all? { |char| current = find_node(char, current) } && current.end_of_word
   end
 
   def list
@@ -61,10 +61,10 @@ class Tree
   end
 
   def add_node(letter, tree)
-    Node.new(letter).tap { |node| tree << node }
+    Node.new(letter).tap { |node| tree.children << node }
   end
 
   def find_node(letter, tree)
-    tree.find { |node| node.key.eql? letter }
+    tree.children.find { |node| node.key.eql? letter }
   end
 end
