@@ -1,6 +1,8 @@
 # create a tree structure
 class Tree
   FILE_PATH = 'data/words.txt'.freeze
+  ZIP_FILE_PATH = 'data/words.zip'.freeze
+  ZIP_TEMP_PATH = 'data/zip_words.txt'.freeze
 
   def initialize
     @root_node = Node.new('')
@@ -21,19 +23,36 @@ class Tree
     perform_list
   end
 
-  def load_from_file
-    File.readlines(FILE_PATH).each { |word| add(word.chomp) }
+  def load_from_file(file_path = FILE_PATH)
+    File.readlines(file_path).each { |word| add(word.chomp) }
   end
 
-  def save_to_file
-    File.open(FILE_PATH, 'a') { |file| perform_list.each { |word| file.puts word } }
+  def save_to_file(file_path = FILE_PATH)
+    File.open(file_path, 'a') { |file| perform_list.each { |word| file.puts word } }
+  end
+
+  def save_to_zip_file(zip_file_path = ZIP_FILE_PATH, zip_temp_path = ZIP_TEMP_PATH)
+    File.delete(zip_file_path) if File.exist?(zip_file_path)
+    save_to_file(zip_temp_path)
+    Zip::File.open(zip_file_path, Zip::File::CREATE) { |zip| zip.add('words.txt', File.join(zip_temp_path)) }
+    File.delete(zip_temp_path)
+  end
+
+  def load_from_zip_file(zip_file_path = ZIP_FILE_PATH, zip_temp_path = ZIP_TEMP_PATH)
+    Zip::File.open(zip_file_path) { |zip_file| zip_file.extract('words.txt', File.join(zip_temp_path)) }
+    load_from_file(zip_temp_path)
+    File.delete(zip_temp_path)
   end
 
   private
 
-  def perform_list(words = [], current = @root_node)
-    current.children.each { |node| perform_list(words, node) }
-    words << current.to_s if current.end_of_word
+  def perform_list(current = @root_node, words = [], word = '')
+    current.children.each do |node|
+      temp_word = word.dup
+      temp_word << node.key
+      perform_list(node, words, temp_word)
+    end
+    words << word if current.end_of_word
     words
   end
 
@@ -42,7 +61,7 @@ class Tree
   end
 
   def add_node(letter, tree)
-    Node.new(letter, tree).tap { |node| tree.children << node }
+    Node.new(letter).tap { |node| tree.children << node }
   end
 
   def find_node(letter, tree)
