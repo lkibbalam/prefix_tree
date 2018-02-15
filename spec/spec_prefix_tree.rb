@@ -27,7 +27,7 @@ RSpec.describe Tree do
     let(:array_of_words) { %w[kefir moloko] }
     let!(:push_to_tree) { array_of_words.each { |word| tree.add(word) } }
 
-    it { expect(tree.list_with_parent).to match_array([temp_string, array_of_words].flatten) }
+    it { expect(tree.list).to match_array([temp_string, array_of_words].flatten) }
   end
 
   describe '#save_to_file' do
@@ -36,8 +36,8 @@ RSpec.describe Tree do
 
     it 'it have to save words to file' do
       %w[abc kefir moloko].each { |word| tree.add(word) }
-      tree.save_to_file
-      expect(tree.list_with_parent).to match_array(File.readlines(file_path).map(&:chomp))
+      tree.save_to_file(file_path)
+      expect(tree.list).to match_array(File.readlines(file_path).map(&:chomp))
     end
   end
 
@@ -45,8 +45,8 @@ RSpec.describe Tree do
     let!(:file_path) { stub_const('Tree::FILE_PATH', 'spec/support/support_load.txt') }
 
     it 'it have to load words from file' do
-      tree.load_from_file
-      expect(tree.list_with_parent).to match_array(File.readlines(file_path).map(&:chomp))
+      tree.load_from_file(file_path)
+      expect(tree.list).to match_array(File.readlines(file_path).map(&:chomp))
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe Tree do
     describe '#load_from_zip_file' do
       it 'it should add words to tree from zip file' do
         tree.load_from_zip_file(zip_file_path, zip_temp_path)
-        expect(tree.list_with_parent).to match_array(%w[abc kefir moloko])
+        expect(tree.list).to match_array(%w[abc kefir moloko])
       end
     end
   end

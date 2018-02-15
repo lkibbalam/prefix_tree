@@ -10,21 +10,17 @@ class Tree
 
   def add(word)
     current = @root_node
-    word.chars.each { |char| current = find_or_add_node(char, current) }
+    word.chars.each { |char| current = find_or_add_node(char, current.children) }
     current.end_of_word = true
   end
 
   def include?(word)
     current = @root_node
-    word.chars.all? { |char| current = find_node(char, current) } && current.end_of_word
+    word.chars.all? { |char| current = find_node(char, current.children) } && current.end_of_word
   end
 
-  def list_with_parent
-    perform_list_with_parent
-  end
-
-  def list_without_parent
-    perform_list_without_parent
+  def list
+    perform_list
   end
 
   def load_from_file(file_path = FILE_PATH)
@@ -32,7 +28,7 @@ class Tree
   end
 
   def save_to_file(file_path = FILE_PATH)
-    File.open(file_path, 'a') { |file| perform_list_with_parent.each { |word| file.puts word } }
+    File.open(file_path, 'a') { |file| perform_list.each { |word| file.puts word } }
   end
 
   def save_to_zip_file(zip_file_path = ZIP_FILE_PATH, zip_temp_path = ZIP_TEMP_PATH)
@@ -50,19 +46,13 @@ class Tree
 
   private
 
-  def perform_list_without_parent(current = @root_node, word = '', words = [])
+  def perform_list(current = @root_node, words = [], word = '')
     current.children.each do |node|
       temp_word = word.dup
       temp_word << node.key
-      perform_list_without_parent(node, temp_word, words)
+      perform_list(node, words, temp_word)
     end
     words << word if current.end_of_word
-    words
-  end
-
-  def perform_list_with_parent(words = [], current = @root_node)
-    current.children.each { |node| perform_list_with_parent(words, node) }
-    words << current.to_s if current.end_of_word
     words
   end
 
@@ -71,10 +61,10 @@ class Tree
   end
 
   def add_node(letter, tree)
-    Node.new(letter, tree).tap { |node| tree.children << node }
+    Node.new(letter).tap { |node| tree << node }
   end
 
   def find_node(letter, tree)
-    tree.children.find { |node| node.key.eql? letter }
+    tree.find { |node| node.key.eql? letter }
   end
 end
